@@ -4,39 +4,39 @@ My answers to [PostgreSQL Exercises](https://pgexercises.com/).
 
 ## basic
 
-everything from a table
+[everything from a table](https://pgexercises.com/questions/basic/selectall.html)
 ```sql
 select * from cd.facilities;
 ```
 
-specific columns from a table
+[specific columns from a table](https://pgexercises.com/questions/basic/selectspecific.html)
 ```sql
 select name, membercost from cd.facilities;
 ```
 
-control row retrieval pt. 1
+[control row retrieval pt. 1](https://pgexercises.com/questions/basic/where.html)
 ```sql
 select * from cd.facilities where membercost > 0;
 ```
 
-control row retrieval pt. 2
+[control row retrieval pt. 2](https://pgexercises.com/questions/basic/where2.html)
 ```sql
 select facid, name, membercost, monthlymaintenance 
 from cd.facilities 
 where membercost > 0 and (membercost < monthlymaintenance/50.0);
 ```
 
-string search
+[string search](https://pgexercises.com/questions/basic/where3.html)
 ```sql
 select * from cd.facilities where name like '%Tennis%';
 ```
 
-matching against multiple values
+[matching against multiple values](https://pgexercises.com/questions/basic/where4.html)
 ```sql
 select * from cd.facilities where facid in (1,5);
 ```
 
-classifying results
+[classifying results](https://pgexercises.com/questions/basic/classify.html)
 ```sql
 select name, 
 	case when (monthlymaintenance > 100) then
@@ -47,19 +47,19 @@ select name,
 	from cd.facilities;  
 ```
 
-working w/ dates
+[working w/ dates](https://pgexercises.com/questions/basic/date.html)
 ```sql
 select memid, surname, firstname, joindate 
 from cd.members
 where joindate > '2012-09-01';
 ```
 
-rm dupes, order
+[rm dupes, order](https://pgexercises.com/questions/basic/unique.html)
 ```sql
 select distinct surname from cd.members order by surname limit 10;
 ```
 
-combining multiple queries
+[combining multiple queries](https://pgexercises.com/questions/basic/union.html)
 ```sql
 select surname 
 	from cd.members
@@ -68,12 +68,12 @@ select name
 	from cd.facilities;
 ```
 
-simple aggregation
+[simple aggregation](https://pgexercises.com/questions/basic/agg.html)
 ```sql
 select max(joindate) from cd.members;
 ```
 
-more aggregation
+[more aggregation](https://pgexercises.com/questions/basic/agg2.html)
 ```sql
 select firstname, surname, joindate 
 from cd.members 
