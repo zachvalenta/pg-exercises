@@ -81,3 +81,18 @@ where joindate = (
     select max(joindate) from cd.members
 );
 ```
+
+## joins
+
+[simple join](https://pgexercises.com/questions/joins/simplejoin.html)
+```sql
+select starttime
+	from 
+		cd.bookings as b
+		inner join 
+        cd.members as m
+		on b.memid = m.memid
+	where 
+		m.surname = 'Farrell'
+		and m.firstname = 'David';
+```
