@@ -86,7 +86,7 @@ where joindate = (
 
 [simple join](https://pgexercises.com/questions/joins/simplejoin.html)
 ```sql
-select starttime
+select b.starttime
 	from 
 		cd.bookings as b
 		inner join 
@@ -95,4 +95,29 @@ select starttime
 	where 
 		m.surname = 'Farrell'
 		and m.firstname = 'David';
+```
+
+[simple join 2](https://pgexercises.com/questions/joins/simplejoin2.html)
+```sql
+select b.starttime, f.name
+    from 
+        cd.bookings as b
+        inner join cd.facilities as f
+        on b.facid = f.facid
+    where 
+        f.facid in (0,1)
+        and date(b.starttime) in ('2012-09-21')
+        /*
+            can also do range via:
+
+            date(b.starttime) >= '2012-09-21'
+            and date(b.starttime) < '2012-09-21'
+
+            two things I don't understand yet:
+
+            * `> 09-20` (vs. `>= 09.21`) doesn't work; presume translates as 'greater than 09-20 00:00' i.e. everything on 09.20
+            * can't do equality i.e. `where date(b.starttime) = '2012-09-21'`
+            - 
+        */
+order by b.starttime;
 ```
