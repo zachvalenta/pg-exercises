@@ -121,3 +121,14 @@ select b.starttime, f.name
         */
 order by b.starttime;
 ```
+
+[self join](https://pgexercises.com/questions/joins/self.html)
+```sql
+select distinct m1.firstname, m1.surname
+	from 
+		cd.members as m1
+		inner join
+		cd.members as m2
+		on m2.recommendedby = m1.memid
+order by m1.surname, m1.firstname;
+```
