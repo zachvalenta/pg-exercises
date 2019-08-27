@@ -122,7 +122,7 @@ select b.starttime, f.name
 order by b.starttime;
 ```
 
-[self join](https://pgexercises.com/questions/joins/self.html)
+[self join - all members who have recommended another member](https://pgexercises.com/questions/joins/self.html)
 ```sql
 select distinct m1.firstname, m1.surname
 	from 
@@ -130,5 +130,17 @@ select distinct m1.firstname, m1.surname
 		inner join
 		cd.members as m2
 		on m2.recommendedby = m1.memid
+order by m1.surname, m1.firstname;
+```
+
+[self join - all members, including whoever recommended them](https://pgexercises.com/questions/joins/self2.html)
+```sql
+-- original
+select m1.firstname, m1.surname, m2.firstname, m2.surname
+	from 
+		cd.members m1
+		left outer join 
+        cd.members m2
+        on m1.recommendedby = m2.memid
 order by m1.surname, m1.firstname;
 ```
