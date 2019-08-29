@@ -135,7 +135,6 @@ order by m1.surname, m1.firstname;
 
 [self join - all members, including whoever recommended them](https://pgexercises.com/questions/joins/self2.html)
 ```sql
--- original
 select m1.firstname, m1.surname, m2.firstname, m2.surname
 	from 
 		cd.members m1
@@ -143,4 +142,21 @@ select m1.firstname, m1.surname, m2.firstname, m2.surname
         cd.members m2
         on m1.recommendedby = m2.memid
 order by m1.surname, m1.firstname;
+```
+
+[join across three tables - all members who have used tennis court](https://pgexercises.com/questions/joins/threejoin.html)
+```sql
+select distinct mem.firstname || ' ' || mem.surname as member, fac.name
+    from 
+        cd.members mem
+        inner join
+        cd.bookings book
+        on mem.memid = book.memid
+        inner join
+        cd.facilities fac
+        on book.facid = fac.facid
+    where book.facid in (0,1) 
+    -- where fac.name like '%Tennis%' -> also returns corrent result and consistent w/ string search exercise
+    -- also feel like this doesn't need to use three tables; the where clause in itself should be sufficient
+order by member
 ```
