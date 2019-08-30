@@ -157,6 +157,35 @@ select distinct mem.firstname || ' ' || mem.surname as member, fac.name
         on book.facid = fac.facid
     where book.facid in (0,1) 
     -- where fac.name like '%Tennis%' -> also returns corrent result and consistent w/ string search exercise
-    -- also feel like this doesn't need to use three tables; the where clause in itself should be sufficient
+    -- ⤵️ also feel like this doesn't need to use three tables; the where clause in itself should be sufficient
+    -- not necessary as a where clause; instead, think of the final join as just a way to pull in the facilities table data necessary for our result set
 order by member
+```
+
+[bookings on specific day which cost more than $30](https://pgexercises.com/questions/joins/threejoin2.html)
+```sql
+SELECT 
+    mem.firstname || ' ' || mem.surname as member,
+    fac.name as facility,
+    CASE
+        WHEN mem.memid = 0 THEN
+            book.slots*fac.guestcost
+        ELSE
+            book.slots*fac.membercost
+    END AS cost
+    FROM
+        cd.members mem
+        INNER JOIN
+        cd.bookings book
+        ON mem.memid = book.memid
+        INNER JOIN
+        cd.facilities fac
+        ON book.facid = fac.facid
+    WHERE 
+        DATE(book.starttime) IN ('2012-09-14') AND
+        (
+            (mem.memid = 0 AND book.slots*fac.guestcost > 30) 
+            OR
+            (mem.memid != 0 AND book.slots*fac.membercost > 30)
+        )
 ```
