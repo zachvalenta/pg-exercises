@@ -133,13 +133,15 @@ select distinct m1.firstname, m1.surname
 order by m1.surname, m1.firstname;
 ```
 
-[self join - all members, including whoever recommended them](https://pgexercises.com/questions/joins/self2.html)
+[self join - all members, including whoever recommended them](https://pgexercises.com/questions/joins/self2.html) --> [same question using subquery](https://pgexercises.com/questions/joins/sub.html)
 ```sql
 select m1.firstname, m1.surname, m2.firstname, m2.surname
 	from 
 		cd.members m1
 		left outer join 
         cd.members m2
+        -- this is where thinking of joins as nested for loops makes sense
+        -- seems like we're saying here is "ok, loop through every record from the join table and return on a match"
         on m1.recommendedby = m2.memid
 order by m1.surname, m1.firstname;
 ```
@@ -188,4 +190,22 @@ SELECT
             OR
             (mem.memid != 0 AND book.slots*fac.membercost > 30)
         )
+```
+
+[all members and their recommender, with no joins](https://pgexercises.com/questions/joins/sub.html)
+```sql
+SELECT DISTINCT
+    mem.firstname || ' ' || mem.surname AS member,
+    (
+        SELECT rec.firstname || ' ' || rec.surname AS recommender
+        FROM cd.members AS rec
+        -- original approach was subquery at where clause in main query 
+        -- incorrect bc `rec` needs to be in result set i.e. cannot just feed into where clause
+        -- never seen subquery in the SELECT
+	  	-- ❓ names declared inside subquery not available to main query
+        WHERE rec.memid = mem.recommendedby
+    )
+FROM
+    cd.members mem
+ORDER BY member
 ```
