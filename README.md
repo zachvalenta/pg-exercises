@@ -192,7 +192,7 @@ SELECT
         )
 ```
 
-[all members and their recommender, with no joins](https://pgexercises.com/questions/joins/sub.html)
+[all members and their recommender, with no joins](https://pgexercises.com/questions/joins/sub.html) --> [version w/ joins](https://pgexercises.com/questions/joins/self2.html)
 ```sql
 SELECT DISTINCT
     mem.firstname || ' ' || mem.surname AS member,
@@ -208,4 +208,33 @@ SELECT DISTINCT
 FROM
     cd.members mem
 ORDER BY member
+```
+
+[bookings on specific day which cost more than $30](https://pgexercises.com/questions/joins/threejoin2.html) --> [version w/ joins](https://pgexercises.com/questions/joins/threejoin2.html)
+
+```sql
+-- this one took a long look just to grok the provided answer
+-- not sure if more/less clear than the version sans subquery
+select member, facility, cost from (
+	select 
+		mems.firstname || ' ' || mems.surname as member,
+		facs.name as facility,
+		case
+			when mems.memid = 0 then
+				bks.slots*facs.guestcost
+			else
+				bks.slots*facs.membercost
+		end as cost
+    from
+        cd.members mems
+        inner join cd.bookings bks
+            on mems.memid = bks.memid
+        inner join cd.facilities facs
+            on bks.facid = facs.facid
+    where
+        DATE(bks.starttime) IN ('2012-09-14')
+	) as bookings -- if you lop this off, error msg read `subquery in FROM must have an alias`
+    -- seems mostly cosmetic here given the selected 'columns' refer to names declared inside the subquery, not the alias
+	where cost > 30
+order by cost desc; 
 ```
